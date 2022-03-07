@@ -4,7 +4,7 @@
 [![Project Documentation](https://img.shields.io/badge/docs-stable-blue)](https://haberdashpi.github.io/vscode-modal-keys/stable/doc_index.html)
 [![Project Documentation](https://img.shields.io/badge/docs-dev-blue)](https://haberdashpi.github.io/vscode-modal-keys/dev/doc_index.html)
 
-ModalKeys is an extension for defining modal keybindings in VSCode. [Vim](https://www.vim.org/) is probably the most well known [modal
+ViModal is Custom. [Vim](https://www.vim.org/) is probably the most well known [modal
 editor](https://unix.stackexchange.com/questions/57705/modeless-vs-modal-editors)
 and ModalKeys includes
 [presets](https://haberdashpi.github.io/vscode-modal-keys/stable/preset_index.html)

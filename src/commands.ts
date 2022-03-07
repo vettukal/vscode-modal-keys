@@ -258,6 +258,7 @@ export function revealActive(editor: vscode.TextEditor){
 
 let docKeymap: DocViewProvider | undefined
 
+
 /**
  * ## Registering Commands
  *
@@ -298,6 +299,9 @@ export function register(context: vscode.ExtensionContext, _docKeymap: DocViewPr
         vscode.commands.registerCommand(toggleKeymapId, toggleKeymap),
         vscode.commands.registerCommand(showKeymapId, showKeymap)
     )
+
+    let channel = vscode.window.createOutputChannel("ModalKeys")
+    setOutputChannel(channel)
     mainStatusBar = vscode.window.createStatusBarItem(
         vscode.StatusBarAlignment.Left)
     mainStatusBar.command = toggleId
@@ -614,6 +618,14 @@ export async function restoreEditorMode(editor: vscode.TextEditor | undefined){
  * so, it shows the search parameters. If no editor is active, we hide the
  * status bar items.
  */
+let outputChannel: vscode.OutputChannel
+export function setOutputChannel(channel: vscode.OutputChannel) {
+    outputChannel = channel
+}
+export function log(message: string) {
+    outputChannel.appendLine(message)
+}
+
 export function updateCursorAndStatusBar(editor: vscode.TextEditor | undefined, help?: string) {
     if (editor) {
         // Get the style parameters
@@ -622,6 +634,15 @@ export function updateCursorAndStatusBar(editor: vscode.TextEditor | undefined, 
             keyMode === Insert ? getInsertStyles() :
             (keyMode === Normal && isSelecting()) ? getSelectStyles() :
                 getNormalStyles(keyMode)
+
+        let itemBackGround = undefined
+        log("Keymode: "+ keyMode)
+        if (keyMode == Insert) {
+            itemBackGround = new vscode.ThemeColor('statusBarItem.warningBackground')
+        } 
+        if (realMode(keyMode) == Visual) {
+            itemBackGround = new vscode.ThemeColor('statusBarItem.errorBackground')
+        }
 
         /**
          * Update the cursor style.
@@ -636,6 +657,9 @@ export function updateCursorAndStatusBar(editor: vscode.TextEditor | undefined, 
             }${search.args.caseSensitive ? "S" : ""}]` :
             text
         mainStatusBar.color = color
+        log("custom log real.....")
+         
+        mainStatusBar.backgroundColor = itemBackGround
         mainStatusBar.show()
         /**
          * Update secondary status bar. If there is any keys pressed in the
